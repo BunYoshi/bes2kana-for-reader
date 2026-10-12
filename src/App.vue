@@ -3,7 +3,7 @@
     <header>
       <nav class="navbar is-dark" :title="t('title')" id="main-header">
         <div class="navbar-brand">
-          <h1 class="navbar-item">{{ t('title') }}</h1>
+          <h1 class="navbar-item app-title">{{ t('title') }}</h1>
         </div>
 
         <div id="navbarMenu" class="navbar-menu is-active">
@@ -18,10 +18,11 @@
                 @change="onFileChange" 
                 ref="fileInput" 
                 aria-label="ファイルを選択"
+                class="custom-file-input"
               />
             </div>
             <div class="navbar-item">
-              <button class="button is-small is-light" id="closeFile" :disabled="isFileClosed" @click="onFileClose">{{ t('closeFile') }}</button>
+              <button class="button is-small is-light custom-action-button" id="closeFile" :disabled="isFileClosed" @click="onFileClose">{{ t('closeFile') }}</button>
             </div>
           </div>
           <div class="navbar-end">
@@ -590,7 +591,21 @@ onMounted(() => {
 })
 </script>
 
-<style>
+<style scoped>
+.app-title {
+  font-size: 1.4rem !important;
+}
+.custom-file-input {
+  font-size: 0.875rem;
+}
+.custom-action-button {
+  font-size: 0.875rem;
+  padding-top: 0.15rem;
+  padding-bottom: 0.15rem;
+  padding-left: 0.75rem;
+  padding-right: 0.75rem;
+  border-radius: 3px;
+}
 .footer a {
   text-decoration: underline;
 }
