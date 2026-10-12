@@ -10,7 +10,15 @@
           <div class="navbar-start">
             <div class="navbar-item">
               <label for="file">{{ t('selectFile') }}</label>
-              <input type="file" id="file" name="file" accept=".bes,.BES" @change="onFileChange" ref="fileInput" />
+              <input 
+                type="file" 
+                id="file" 
+                name="file" 
+                accept=".bes,.BES" 
+                @change="onFileChange" 
+                ref="fileInput" 
+                aria-label="ファイルを選択"
+              />
             </div>
             <div class="navbar-item">
               <button class="button is-small is-light" id="closeFile" :disabled="isFileClosed" @click="onFileClose">{{ t('closeFile') }}</button>
