@@ -60,6 +60,7 @@ import Braille from './components/Braille.vue'
 import bes2unicode from './modules/bes2unicode'
 import brf2unicode from './modules/brf2unicode'
 import { useI18n } from './modules/i18n'
+import { match } from 'assert/strict'
 
 const { t, locale } = useI18n()
 locale.value = 'ja'
@@ -220,20 +221,20 @@ function finalizeText(text: string): string {
     .replace(/\u2824\u2824/g, '\u2821\u2811\u2800') // 波線を「カラ」に変換
     .replace(/\u2810\u2800/g, '／') // 中点を削除
     .replace(/\u2810\u2802|\u2820\u2824/g, '…') // 小見出し符類
-    .replace(/\u2816(?=\u2800|\u2824|@LB@|…|／)/g, '!') // 感嘆符
+    .replace(/\u2816(?=\u2800|\u2824|@|…|／)/g, '!') // 感嘆符
     .replace(/\u2816(?=\u2820\u2804|\u2830\u283c|\u2830\u2806|\u2820\u2822\u2800|\u2820\u2822@LB@)/g, '!') // 感嘆符
-    .replace(/[^\u2800]\u2820\u2822(?=\u2800|@LB@)/g, (match) => {
+    .replace(/[^\u2800]\u2820\u2822(?=\u2800|\u2830|\u2822|\u2824|…|／|@|!)/g, (match) => {
       return match.replace(/\u2820\u2822/g, '／\u2825\u2805\u2810\u2833\u2819\u2833／')
     }) // 第３星印（ハナジルシ）の前後に「／」を挿入
-    .replace(/\u2800\u2800\u2820\u2822(?=\u2800|@LB@)/g, '\u2800\u2800\u2825\u2805\u2810\u2833\u2819\u2833…') // 行頭の第３星印（ハナジルシ）後に「…」を挿入
+    .replace(/(?<=@)\u2800\u2800\u2820\u2822/g, '\u2800\u2800\u2825\u2805\u2810\u2833\u2819\u2833…') // 行頭の第３星印（ハナジルシ）後に「…」を挿入
     .replace(/[^\u2800]\u2830\u2806/g, (match) => {
       return match.replace(/\u2830\u2806/g, '／\u2808\u281d\u2812／')
     }) // 文中注記符（チュー）の前後に「／」を挿入
-    .replace(/\u2800\u2800\u2830\u2806/g, '\u2800\u2800\u2808\u281d\u2812…') // 行頭の文中注記符（チュー）後に「…」を挿入
+    .replace(/(?<=@)\u2800\u2800\u2830\u2806/g, '\u2800\u2800\u2808\u281d\u2812…') // 行頭の文中注記符（チュー）後に「…」を挿入
     .replace(/[^\u2800]\u2830\u283c([^\u2800]+)\u2806/gu, (match) => {
       return match.replace(/\u2830\u283c([^\u2800]+)\u2806/g, '／\u2808\u281d\u2812\u2800\u283c$1\u2824／')
     }) // 数字入り文中注記符の前後に「／」を挿入
-    .replace(/\u2800\u2800\u2830\u283c([^\u2800]+)\u2806/gu, '\u2800\u2800\u2808\u281d\u2812\u2800\u283c$1…') // 数字入り文中注記符後に「…」を挿入
+    .replace(/(?<=@)\u2800\u2800\u2830\u283c([^\u2800]+)\u2806/gu, '\u2800\u2800\u2808\u281d\u2812\u2800\u283c$1…') // 数字入り文中注記符後に「…」を挿入
     .replace(/\u2820\u2804/g, '-') // 第２つなぎ符
 
   // アドレス囲み符号の外だけの処理
@@ -261,9 +262,12 @@ function finalizeText(text: string): string {
     .replace(numberSpaceRegex, "$1\u2824\u2800") // 1
     .replace(numberNumberRegex, "$1\u2800\u283c") // 2
     .replace(numberHyphenRegex, "$1-") // 3
-  })
+  }).join('')
 
-  return processedParts.join('')
+  const final = processedParts
+    .replace(/(?<!\u2800|\u2832|\u2822|@|!|／)\u2800{2}(?!\u2800|／)/gu, '／') // ２マス分のスペースはスラッシュに変換
+
+  return final
 }
 
 // BESのユニコードを整形するメイン関数
@@ -274,8 +278,8 @@ const formatBrailleText = (text: string): string => {
   const normalizedText = text
     .replace(/@LB@.@PB@/gu, '@LB@@PB@') // 改ページ記号を整理
     .replace(/@LB@@HR@@LB@@LB@/g, '@LB@') // 見出しタグを削除
-    .replace(/\u2800\u2800\u2814\u2814/g, '\u2800\u2800\u282a\u283f\u2810\u2833\u2819\u2833…') // 第１星印を「コメジルシ」に変換
-    .replace(/\u2800\u2800\u2822\u2822/g, '\u2800\u2800\u282e\u2833\u2810\u2833\u2819\u2833…') // 第２星印を「ホシジルシ」に変換
+    .replace(/(?<=@)\u2800\u2800\u2814\u2814/g, '\u2800\u2800\u282a\u283f\u2810\u2833\u2819\u2833…') // 第１星印を「コメジルシ」に変換
+    .replace(/(?<=@)\u2800\u2800\u2822\u2822/g, '\u2800\u2800\u282e\u2833\u2810\u2833\u2819\u2833…') // 第２星印を「ホシジルシ」に変換
 
   // ----------------------------------------------------
   // 表紙・目次ページの終わりを判定
