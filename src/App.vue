@@ -207,8 +207,8 @@ function finalizeText(text: string): string {
     .replace(/\u2810\u283e/g, 'チョメ')
     .replace(/\u2830\u282a/g, '@') // 「@」を反映
     .replace(pRegex, "\u2826\u280f$1\u2834$2") // 「％」を「p」に変換
-    .replace(/\u2830\u2804/g, '\u2800') // 第２カギ開き
-    .replace(/\u2820\u2806/g, '\u2800') // 第２カギ閉じ
+    .replace(/\u2830\u2804/g, '／') // 第２カギ開き
+    .replace(/\u2820\u2806/g, '／') // 第２カギ閉じ
     .replace(/\u2810\u2836/g, '／') // 第２カッコ開き
     .replace(/\u2836\u2802/g, '／') // 第２カッコ閉じ
     .replace(/\u2830\u2836/g, '／') // 二重カッコ開き
