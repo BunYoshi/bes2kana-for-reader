@@ -14,7 +14,7 @@
                 type="file" 
                 id="file" 
                 name="file" 
-                accept=".bes,.BES" 
+                accept=".bes,.BES,.besx,.BESX" 
                 @change="onFileChange" 
                 ref="fileInput" 
                 aria-label="ファイルを選択"
@@ -221,7 +221,7 @@ function finalizeText(text: string): string {
     .replace(/\u2824\u2824/g, '\u2821\u2811\u2800') // 波線を「カラ」に変換
     .replace(/\u2810\u2800/g, '／') // 中点を削除
     .replace(/\u2810\u2802|\u2820\u2824/g, '…') // 小見出し符類
-    .replace(/\u2816(?=\u2800|\u2824|@|…|／)/g, '!') // 感嘆符
+    .replace(/\u2816(?=\u2800|\u2824|\u2816|\u2822|@|…|／)/g, '!') // 感嘆符
     .replace(/\u2816(?=\u2820\u2804|\u2830\u283c|\u2830\u2806|\u2820\u2822\u2800|\u2820\u2822@LB@)/g, '!') // 感嘆符
     .replace(/[^\u2800]\u2820\u2822(?=\u2800|\u2830|\u2822|\u2824|…|／|@|!)/g, (match) => {
       return match.replace(/\u2820\u2822/g, '／\u2825\u2805\u2810\u2833\u2819\u2833／')
@@ -542,8 +542,8 @@ const onFileChange = (event: Event) => {
   if (!files || !files.length) return
 
   const file = files[0]
-  if (!file.name.toLowerCase().endsWith('.bes')) {
-    window.alert('.bes点字データではありません')
+  if (!file.name.toLowerCase().endsWith('.bes') && !file.name.toLowerCase().endsWith('.besx')) {
+    window.alert('.bes または .besx 点字データではありません')
     input.value = ''
     return
   }
@@ -556,6 +556,7 @@ const onFileChange = (event: Event) => {
       isBrf.value = false
       const result = target.result as ArrayBuffer
       const arr = new Uint8Array(result)
+      console.log(bes2unicode(arr).slice(-230))
       str.value = formatBrailleText(bes2unicode(arr))
     }
   }
