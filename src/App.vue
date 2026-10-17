@@ -556,7 +556,6 @@ const onFileChange = (event: Event) => {
       isBrf.value = false
       const result = target.result as ArrayBuffer
       const arr = new Uint8Array(result)
-      console.log(bes2unicode(arr).slice(-230))
       str.value = formatBrailleText(bes2unicode(arr))
     }
   }
