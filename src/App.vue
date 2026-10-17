@@ -241,6 +241,9 @@ function finalizeText(text: string): string {
   const addressEnclosedRegex = /\u2820\u2826.+?\u2820\u2834/gu
   const parts = finalized.split(/(\u2820\u2826.+?\u2820\u2834)/gu)
 
+  // 00. 位取り点以外の３の点を「ワ」に変換
+  const numberWaRegex = new RegExp(`\\u2804(?!${numbers}{3})`, "gu")
+  
   // 0. 数字直後の句点をハイフンに置き換える
   const numberPeriodRegex = new RegExp(`(\\u283c${numbers}+)\\u2832\\u2800(?!\\u2800)`, "gu")
 
@@ -258,6 +261,9 @@ function finalizeText(text: string): string {
       return part
     }
     return part
+    .replace(/\u283c[^\u2800\u2830\u2822\u2824…／@!]+/g, (match) => {
+      return match.replace(numberWaRegex, "ワ")
+    })
     .replace(numberPeriodRegex, "$1\u2824…\u2800") // 0
     .replace(numberSpaceRegex, "$1\u2824\u2800") // 1
     .replace(numberNumberRegex, "$1\u2800\u283c") // 2
