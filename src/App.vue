@@ -219,7 +219,7 @@ function finalizeText(text: string): string {
     .replace(/\u2800\u2836{2}$/u, '') // 行頭の点訳挿入符
     .replace(/\u2836{1,2}/g, '／') // 第１カッコまたは点訳挿入符
     .replace(/\u2824\u2824/g, '\u2821\u2811\u2800') // 波線を「カラ」に変換
-    .replace(/\u2810\u2800/g, '／') // 中点を削除
+    .replace(/\u2810\u2800/g, '、') // 中点を削除
     .replace(/\u2810\u2802|\u2820\u2824/g, '…') // 小見出し符類
     .replace(/\u2816(?=\u2800|\u2824|\u2816|\u2822|@|…|／)/g, '!') // 感嘆符
     .replace(/\u2816(?=\u2820\u2804|\u2830\u283c|\u2830\u2806|\u2820\u2822\u2800|\u2820\u2822@LB@)/g, '!') // 感嘆符
@@ -256,11 +256,18 @@ function finalizeText(text: string): string {
   // 3. 数字をつなぐハイフンをユニコードからカナに変換する
   const numberHyphenRegex = new RegExp(`(\\u283c${numbers}+)\\u2824(?=\\u283c)`, "gu")
 
+  // 4. 時刻の略記を「時分」表記に変換する
+  const jikokuRegex = new RegExp(`(\\u283c${numbers}+)\\u2812(${numbers}+)`, "gu")
+
+  // 5. 数符直後の３の点をアポストロフィに変換する
+  const aposRegex = new RegExp(`\\u283c\\u2804(${numbers}+)`, "gu")
+
   const processedParts = parts.map((part) => {
     if (part.startsWith("\u2820\u2826") && part.endsWith("\u2820\u2834")) {
       return part
     }
     return part
+    .replace(aposRegex, "\u283c’$1")
     .replace(/\u283c[^\u2800\u2830\u2822\u2824…／@!]+/g, (match) => {
       return match.replace(numberWaRegex, "ワ")
     })
@@ -268,10 +275,11 @@ function finalizeText(text: string): string {
     .replace(numberSpaceRegex, "$1\u2824\u2800") // 1
     .replace(numberNumberRegex, "$1\u2800\u283c") // 2
     .replace(numberHyphenRegex, "$1-") // 3
+    .replace(jikokuRegex, "$1時$2分\u2824") // 4
   }).join('')
 
   const final = processedParts
-    .replace(/(?<!\u2800|\u2832|\u2822|@|!|／)\u2800{2}(?!\u2800|／)/gu, '／') // ２マス分のスペースはスラッシュに変換
+    .replace(/(?<!\u2800|\u2832|\u2822|@|!|／)\u2800{2}(?!\u2800|／)/gu, '、') // ２マス分のスペースはスラッシュに変換
 
   return final
 }
