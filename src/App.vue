@@ -279,7 +279,7 @@ function finalizeText(text: string): string {
   }).join('')
 
   const final = processedParts
-    .replace(/(?<!\u2800|\u2832|\u2822|@|!|／)\u2800{2}(?!\u2800|／)/gu, '、') // ２マス分のスペースはスラッシュに変換
+    .replace(/(?<=.)(?<!\u2800|\u2832|\u2822|@|!|／)\u2800{2}(?!\u2800|／)/gu, '、') // ２マス分のスペースはスラッシュに変換
 
   return final
 }
