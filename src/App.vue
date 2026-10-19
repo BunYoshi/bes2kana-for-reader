@@ -139,7 +139,7 @@ function processEnclosedSections(text: string): string {
       .replace(/\u282a/g, '@')
       .replace(/\u2829/g, '#')
       .replace(/\u282b/g, '\\')
-      .replace(/\u2839/g, '$$')
+      .replace(/\u2839/g, '$')
       .replace(/\u283b/g, '%')
       .replace(/\u282f/g, '&')
       .replace(/\u2821/g, '*')
