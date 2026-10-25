@@ -2,7 +2,7 @@
 
 点字データ（.bes形式）をカタカナに変換してブラウザに表示するツールです。
 
-[このページから利用できます](https://BunYoshi.github.io/bes2kana-for-reader/)
+[このページから利用できます](https://bunyoshi.github.io/bes2kana-for-reader/)
 
 ブラウザ上に表示されたテキスト全文を、ボタン一つでコピーすることも可能です。
 
