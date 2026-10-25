@@ -445,6 +445,7 @@ const formatBrailleText = (text: string): string => {
   if (lines.length === 0) return ''
 
   let currentParagraphIndent = -1
+  let indentDiff = undefined
   let inBlockCount = 0
   const Chars = "[\u2813\u2816\u2836\u281b]"
   const Zorome = "([\\u2812\\u2802\\u2810])\\1{10,}"
@@ -513,27 +514,64 @@ const formatBrailleText = (text: string): string => {
       // つなぎ目がくっつきすぎないよう、前行末尾に \u2800 がなければ補う
       const needsSpace = prevLine.length > 0 && !prevLine.endsWith('\u2800')
       result[result.length - 1] = prevLine + (needsSpace ? '\u2800' : '') + adjustNumbers(line)
+      indentDiff = undefined
       continue
     }
 
-    // 結合条件2: 前行行頭の \u2800 が4マス以上あり、次行が「+2マス」のインデントで続く場合
-    if (currentParagraphIndent >= 4 && spaceCount === currentParagraphIndent + 2) {
+    // 結合条件2: 前行行頭の \u2800 が4マス以上10マス未満で、次行が「+2マス」のインデントで続く場合
+    if (
+        currentParagraphIndent >= 4
+        && currentParagraphIndent < 10
+        && spaceCount === currentParagraphIndent + 2
+    ) {
       // 行頭の \u2800 を 1マス分 に縮小して結合
       const trimmedContent = line.replace(/^\u2800+/, '\u2800')
       result[result.length - 1] = prevLine + adjustNumbers(trimmedContent)
+      indentDiff = undefined
       continue
     }
 
+    // 結合条件3: 前行行頭の \u2800 が10マス以上あり、次行が -2, 0, +2 マスのインデントで続く場合
+    if (currentParagraphIndent >= 10) {
+        if (indentDiff) {
+            if (spaceCount === currentParagraphIndent + indentDiff) {
+                // 行頭の \u2800 を 1マス分 に縮小して結合
+                const trimmedContent = line.replace(/^\u2800+/, '\u2800')
+                result[result.length - 1] = prevLine + adjustNumbers(trimmedContent)
+                continue
+            }
+        } else {
+            if (
+                spaceCount === currentParagraphIndent
+                || spaceCount === currentParagraphIndent + 2
+                || spaceCount === currentParagraphIndent -2
+            ) {
+                // 行頭の \u2800 を 1マス分 に縮小して結合
+                const trimmedContent = line.replace(/^\u2800+/, '\u2800')
+                result[result.length - 1] = prevLine + adjustNumbers(trimmedContent)
+                indentDiff = spaceCount - currentParagraphIndent
+                continue
+            }
+        }
+    }
+    indentDiff = undefined
+
     // 上記の結合条件に当てはまらない場合（新しい段落の開始など）
-    if (spaceCount >= 4 && spaceCount < 10) {
+    if (spaceCount >= 4) {
       if (inBlockCount > 0) {
         if (result[result.length - 1] !== '') {
           result.push('@LB@' + adjustNumbers(line))
         } else {
           result.push(adjustNumbers(line))
         }
+      } else if (
+        (spaceCount === 4 && line[4] === '⠶')
+        || spaceCount >= 10
+        || currentParagraphIndent >= spaceCount
+      ) {
+        result.push(adjustNumbers(line))
       } else {
-        result[result.length - 1] = result[result.length - 1] + '@PB@' + adjustNumbers(line)
+        result.push('@PB@' + adjustNumbers(line))
       }
       currentParagraphIndent = spaceCount
     } else {
