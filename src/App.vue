@@ -47,7 +47,8 @@
             Original: <a href="https://github.com/shunito/bes-viewer" target="_blank" rel="noopener">UniBraille Viewer α</a> by Shunsuke Ito (@shunito)
         </p>
         <p style="font-size: 12px; margin-top: 3px;">
-            Licensed under the <a href="https://raw.githubusercontent.com/bunyoshi/bes2kana-for-reader/main/LICENSE" target="_blank" rel="noopener">MIT License</a>
+            <!-- Licensed under the <a href="https://raw.githubusercontent.com/bunyoshi/bes2kana-for-reader/main/LICENSE" target="_blank" rel="noopener">MIT License</a> -->
+            Licensed under the <a href="./LICENSE.txt" target="_blank" rel="noopener">MIT License</a>
         </p>
       </div>
     </footer>

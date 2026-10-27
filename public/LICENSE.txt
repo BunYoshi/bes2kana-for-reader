@@ -1,6 +1,8 @@
 MIT License
 
 Copyright (c) 2018 Shunsuke Ito
+Copyright (c) 2026 1983hachigoro
+Copyright (c) 2026 BunYoshi
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
