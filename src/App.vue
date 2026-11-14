@@ -198,8 +198,14 @@ function finalizeText(text: string): string {
   // 英字関連の変換
   const endDelimiters = "(\\u2820\\u2806|\\u2800|\\u2824|\\u2836|\\u283c|$)"
   const pRegex = new RegExp(`\\u2830\\u280f(.*?)${endDelimiters}`, "gu")
+  const shijifu1Regex = new RegExp(`⠐⠤(.*?)⠤⠂`, "gu")
+  const shijifu2Regex = new RegExp(`⠐⠤⠤(.*?)⠤⠤⠂`, "gu")
+  const shijifu3Regex = new RegExp(`⠰⠤⠤(.*?)⠤⠤⠆`, "gu")
 
   finalized = finalized
+    .replace(shijifu3Regex, '【$1\u2824】')
+    .replace(shijifu2Regex, '“$1\u2824”')
+    .replace(shijifu1Regex, '‘$1\u2824’')
     .replace(/\u2810\u2835/g, 'マル')
     .replace(/\u2810\u2837/g, 'サンカク')
     .replace(/\u2810\u283d/g, 'シカク')
@@ -208,16 +214,16 @@ function finalizeText(text: string): string {
     .replace(/\u2830\u282a/g, '@') // 「@」を反映
     .replace(pRegex, "\u2826\u280f$1\u2834$2") // 「％」を「p」に変換
     .replace(/\u2830\u2804/g, '／') // 第２カギ開き
-    .replace(/\u2820\u2806/g, '／') // 第２カギ閉じ
+    .replace(/\u2820\u2806/g, '\u2824／') // 第２カギ閉じ
     .replace(/\u2810\u2836/g, '／') // 第２カッコ開き
-    .replace(/\u2836\u2802/g, '／') // 第２カッコ閉じ
+    .replace(/\u2836\u2802/g, '\u2824／') // 第２カッコ閉じ
     .replace(/\u2830\u2836/g, '／') // 二重カッコ開き
-    .replace(/\u2836\u2806/g, '／') // 二重カッコ閉じ
+    .replace(/\u2836\u2806/g, '\u2824／') // 二重カッコ閉じ
     .replace(/\u2830\u2824/g, '／') // 二重カギ開き
-    .replace(/\u2824\u2806/g, '／') // 二重カギ閉じ
+    .replace(/\u2824\u2806/g, '\u2824／') // 二重カギ閉じ
     .replace(/^\u2800{2}\u2836{2}\u2800/g, '\u2800\u2800') // 第１段落挿入符開き
     .replace(/\u2800\u2836{2}$/u, '') // 行頭の点訳挿入符
-    .replace(/\u2836{1,2}/g, '／') // 第１カッコまたは点訳挿入符
+    .replace(/\u2836{1,2}/g, '\u2824／') // 第１カッコまたは点訳挿入符
     .replace(/\u2824\u2824/g, '\u2821\u2811\u2800') // 波線を「カラ」に変換
     .replace(/\u2810\u2800/g, '、') // 中点を削除
     .replace(/\u2810\u2802|\u2820\u2824/g, '…') // 小見出し符類
