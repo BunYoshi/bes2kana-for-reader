@@ -12,16 +12,16 @@ import * as Tables from './tables'
     Tables.numberTable['⠒'] = ':'
 
     const str = text
-      .replace(numberNumberRegex, "$1、$2")
+      .replace(numberNumberRegex, "$1、　$2")
       .replace(numberSpaceNumberRegex, (match) => {
-        return match.replace(/\u2800/g, "、")
+        return match.replace(/\u2800/g, "、　")
       })
       .replace(/(?<!⠤)⠤⠼/g, "⠎\u2800⠼")
     return str.replace(numberRegex, (match) => {
       const content = match.slice(1)
       // 下がり数字を数字に変換
       const kansuji = content
-        .replace(downNumPlusNumRegex, '$1、$2')
+        .replace(downNumPlusNumRegex, '$1、　$2')
         .replace(downNumberRegex, (match) => {
           let result = ''
           for (const char of match) {
