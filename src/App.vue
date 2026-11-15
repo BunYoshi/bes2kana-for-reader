@@ -60,6 +60,7 @@ import Braille from './components/Braille.vue'
 import bes2unicode from './modules/bes2unicode'
 import brf2unicode from './modules/brf2unicode'
 import { useI18n } from './modules/i18n'
+import { formatText } from './formatText/formatText'
 import { match } from 'assert/strict'
 
 const { t, locale } = useI18n()
@@ -608,7 +609,7 @@ const onFileChange = (event: Event) => {
       isBrf.value = false
       const result = target.result as ArrayBuffer
       const arr = new Uint8Array(result)
-      str.value = formatBrailleText(bes2unicode(arr))
+      str.value = formatText(bes2unicode(arr), 'katakana')
     }
   }
 
@@ -632,7 +633,7 @@ const onGetBesUrl = async (url: string) => {
       str.value = brf2unicode(text)
     } else {
       const buf = await response.arrayBuffer()
-      str.value = formatBrailleText(bes2unicode(new Uint8Array(buf)))
+      str.value = formatText(bes2unicode(new Uint8Array(buf)), 'katakana')
     }
     openFile.value = true
   } catch (error) {
