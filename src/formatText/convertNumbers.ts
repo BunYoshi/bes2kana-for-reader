@@ -1,8 +1,10 @@
+import { match } from 'assert'
 import * as Tables from './tables'
 
   // 数字の変換
   export function convertNumbers(text: string) {
     const numberNumberRegex = new RegExp(`(⠼${Tables.numbers}+)(⠼${Tables.numbers}+)`, "gu")
+    const numberSpaceNumberRegex = new RegExp(`(⠼${Tables.numbers}+)(\\u2800⠼${Tables.numbers}+)+`, "gu")
     const numberRegex = new RegExp(`⠼(?:${Tables.downNumbers}|[⠄])*(?:${Tables.numbers}+(?:[⠄⠂⠒]${Tables.numbers}+)*)?`, "gu")
     const downNumberRegex = new RegExp(`^${Tables.downNumbers}+`, "gu")
     const downNumPlusNumRegex = new RegExp(`^(${Tables.downNumbers}+)(${Tables.numbers}+)`, "gu")
@@ -11,6 +13,9 @@ import * as Tables from './tables'
 
     const str = text
       .replace(numberNumberRegex, "$1、$2")
+      .replace(numberSpaceNumberRegex, (match) => {
+        return match.replace(/\u2800/g, "、")
+      })
       .replace(/(?<!⠤)⠤⠼/g, "⠎\u2800⠼")
     return str.replace(numberRegex, (match) => {
       const content = match.slice(1)
