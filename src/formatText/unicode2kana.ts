@@ -1,5 +1,6 @@
 import * as Types from './types'
 import { convertAddress } from './convertAddress'
+import { convertChemi } from './convertChemi'
 import { convertEnglish } from './convertEnglish'
 import { convertAlphabets } from './convertAlphabets'
 import { convertNumbers } from './convertNumbers'
@@ -10,6 +11,7 @@ import { switchMode } from './switchMode'
 export function unicode2kana(brailleText: string, options: Types.EngineOptions): string {
 
   let result = convertAddress(brailleText)
+  result = convertChemi(result)
   result = convertEnglish(result)
   result = convertAlphabets(result)
   result = convertNumbers(result)
