@@ -14,6 +14,7 @@
     .replace(/×/g, 'バツ')
     .replace(/◇/g, 'チョメ')
     .replace(/～/g, 'カラ')
+    .replace(/・/g, '、')
     .replace(/(?<=.)(?<!　|。|？|@|！|／)　{2}(?!　|／)/gu, '、') // ２マス分のスペースは「、」に変換
     return result
  }
