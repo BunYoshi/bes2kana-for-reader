@@ -5,6 +5,7 @@ import * as Tables from './tables'
   export function convertNumbers(text: string) {
     const numberNumberRegex = new RegExp(`(?:⠼${Tables.numbers}+){2,}`, "gu")
     const numberSpaceNumberRegex = new RegExp(`(⠼${Tables.numbers}+)(\\u2800⠼${Tables.numbers}+)+`, "gu")
+    const numberHyphenNumberRegex = new RegExp(`(⠼${Tables.numbers}+)(⠤⠼${Tables.numbers}+)+`, "gu")
     const numberRegex = new RegExp(`⠼(?:${Tables.downNumbers}|[⠄])*(?:${Tables.numbers}+(?:[⠄⠂⠒]${Tables.numbers}+)*)?`, "gu")
     const downNumberRegex = new RegExp(`^${Tables.downNumbers}+`, "gu")
     const downNumPlusNumRegex = new RegExp(`^(${Tables.downNumbers}+)(${Tables.numbers}+)`, "gu")
@@ -20,7 +21,9 @@ import * as Tables from './tables'
       .replace(numberSpaceNumberRegex, (match) => {
         return match.replace(/\u2800/g, "、　")
       })
-      .replace(/(?<!⠤)⠤⠼/g, "⠎\u2800⠼")
+      .replace(numberHyphenNumberRegex, (match) => {
+        return match.replace(/⠤/g, "ノ　")
+      })
     return str.replace(numberRegex, (match) => {
       const content = match.slice(1)
       // 下がり数字を数字に変換
