@@ -216,12 +216,12 @@ export const wakuTable: Record<string, string> = {
 export const nonBraille = "[^\\u2800-\\u28ff]"
 export const tenjiAlphabets = "[⠁⠃⠉⠙⠑⠋⠛⠓⠊⠚⠅⠇⠍⠝⠕⠏⠟⠗⠎⠞⠥⠧⠺⠭⠽⠵]"
 // export const numbers = "[⠚⠁⠃⠉⠙⠑⠋⠛⠓⠊]"
-export const numbers = "(⠚|⠁|⠃|⠉|⠙|⠑|⠋|⠛|⠓|⠊|⠐⠿)"
+export const numbers = "(?:⠚|⠁|⠃|⠉|⠙|⠑|⠋|⠛|⠓|⠊|⠐⠿)"
 export const downNumbers = "[⠴⠂⠆⠒⠲⠢⠖⠶⠦⠔]"
 
 // 数字関連の定義
 // const numbersArray = Array.from(numbers.replace(/[\[\]]/g, ''))
-const numbersArray = Array.from(numbers.replace(/[()]/g, '').split('|'))
+const numbersArray = Array.from(numbers.replace(/[(?:)]/g, '').split('|'))
 export const numberTable: Record<string, string> = {}
 // numbersArray.forEach((char, index) => {
 //     numberTable[char] = String(index)
