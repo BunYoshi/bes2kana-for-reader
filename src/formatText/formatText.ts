@@ -11,6 +11,7 @@ export function formatText(unicode: string, mode: OutputMode): string {
   // ユニコードの整理
   const normalizedText = ('@PE@\u2800' + unicode)
     .replace(/@LB@@IN@[^@]@LE@/gu, '@LB@@LE@@PB@@LE@@PE@') // インデント前後に仕切り線
+    .replace(/@IN@[^@]/gu, '') // インデント記号を削除
     .replace(/@IN@/gu, '') // インデント記号を削除
     .replace(/@LB@.@PE@/gu, '@LB@@PE@') // 改ページ記号を整理
 
