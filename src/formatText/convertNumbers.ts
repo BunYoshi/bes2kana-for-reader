@@ -3,10 +3,10 @@ import * as Tables from './tables'
 
   // 数字の変換
   export function convertNumbers(text: string) {
-    const numberNumberRegex = new RegExp(`(?:⠼${Tables.numbers}+){2,}`, "gu")
+    const numberNumberRegex = new RegExp(`(?:⠼${Tables.downNumbers}*${Tables.numbers}+){2,}`, "gu")
     const numberSpaceNumberRegex = new RegExp(`(⠼${Tables.numbers}+)(\\u2800⠼${Tables.numbers}+)+`, "gu")
     const numberHyphenNumberRegex = new RegExp(`(⠼${Tables.numbers}+)(⠤⠼${Tables.numbers}+)+`, "gu")
-    const numberRegex = new RegExp(`⠼(?:${Tables.downNumbers}|[⠄])*(?:${Tables.numbers}+(?:[⠄⠂⠒]${Tables.numbers}+)*)?`, "gu")
+    const numberRegex = new RegExp(`(?:(⠼${Tables.downNumbers}+|⠼⠄|⠼))(?:${Tables.numbers}+(?:[⠄⠂⠒]${Tables.numbers}+)*)?`, "gu")
     const downNumberRegex = new RegExp(`^${Tables.downNumbers}+`, "gu")
     const downNumPlusNumRegex = new RegExp(`^(${Tables.downNumbers}+)(${Tables.numbers}+)`, "gu")
     Tables.numberTable['⠂'] = '.'
@@ -14,7 +14,7 @@ import * as Tables from './tables'
 
     const str = text
       .replace(numberNumberRegex, (match) => {
-        const unitRegex = new RegExp(`⠼${Tables.numbers}+`, "gu")
+        const unitRegex = new RegExp(`⠼${Tables.downNumbers}*${Tables.numbers}+`, "gu")
         const found = match.match(unitRegex)
         return found ? found.join('、　') : match
       })

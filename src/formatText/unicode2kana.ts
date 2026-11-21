@@ -11,6 +11,7 @@ import { switchMode } from './switchMode'
 export function unicode2kana(brailleText: string, options: Types.EngineOptions): string {
 
   let result = convertAddress(brailleText)
+    .replace(/行移し/g, '')
   result = convertChemi(result)
   result = convertEnglish(result)
   result = convertAlphabets(result)

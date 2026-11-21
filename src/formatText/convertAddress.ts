@@ -73,8 +73,8 @@ import * as Tables from './tables'
       const matchedText = text
         .slice(match.index, match.index + match.length)
         .slice(2, -2)
-        .replace(/\u2800?⠈/gu, '')
-        // .replace(nonBrailleRegex, '')
+        .replace(/行移し⠈/gu, '')
+        .replace(/\u2800⠈/gu, '')
         
       let upperType = 0
       const parts = matchedText.split(/(⠸⠦.+?⠸⠴)/gu)

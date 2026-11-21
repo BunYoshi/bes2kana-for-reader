@@ -3,7 +3,7 @@ import * as Tables from './tables'
 
 export function convertKana(text: string): string {
 
-  const endSymbols = "[\\u2800|\\u2816|⠤|？|@|…|=|：|】|”|’|＞|』|｝|\\)|\\||※|☆|、|。|・|⠢|│]"
+  const endSymbols = "[\\u2800|\\u2816|⠤|？|@|…|=|：|】|”|’|＞|』|｝|\\)|\\||※|☆|、|。|・|⠢|│|～|[]"
   function createRegex(prefix: string) {
     return new RegExp(`${prefix}(?=${endSymbols}|$)`, "gu")
   }

@@ -2,11 +2,13 @@
 
 const list: Record<string, string> = {}
 list['a0'] = '⠀'
-list['fe'] = '@LB@'
-list['0d'] = ''
-list['0c'] = '@LB@'
-list['fd'] = '@PB@'
-list['f4'] = '@LB@@HR@@LB@'
+list['fe'] = '@LE@'
+list['0d'] = '@LB@'
+list['0c'] = '@PB@'
+list['fd'] = '@PE@'
+list['f4'] = ''
+list['f5'] = '@IN@'
+list['f6'] = '@IN@'
 
 list['a1'] = '⠁'
 list['a3'] = '⠃'

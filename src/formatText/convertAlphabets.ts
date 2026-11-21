@@ -5,6 +5,8 @@ import { convertHatsuon } from './convertHatsuon'
   export function convertAlphabets(text: string) {
     Tables.alphabetTable['⠌'] = '/'
     Tables.alphabetTable['⠲'] = '.'
+    Tables.alphabetTable['⠣'] = '²'
+    Tables.alphabetTable['⠩'] = '³'
     const endMarks = "\\u2800|⠠⠤|⠤|⠶|⠰⠄|⠠⠆|⠰⠤|⠐⠶|⠰⠶|⠐⠤|⠼"
     const alphabetRegex = new RegExp(`⠰((?!(${endMarks}|${Tables.nonBraille})).)+`, "gu")
     const hirakiRegex = new RegExp(`^(⠰⠄|⠰⠤|⠰⠆)+`, "gu")
